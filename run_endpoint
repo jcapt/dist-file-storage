@@ -1,0 +1,7 @@
+#/bin/bash
+
+export FLASK_APP=endpoint.py
+export FLASK_ENV=development
+
+flask run --port 3000
+
