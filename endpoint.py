@@ -3,6 +3,7 @@ from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 from registry import FileRegistry
+from fileutils import gen_unique_filename
 
 UPLOAD_FOLDER = './tmpfiles'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -28,7 +29,7 @@ def upload_file(entity_id):
         if file:
             filename = secure_filename(file.filename)
             filename = gen_unique_filename(filename)
-            file.save(filepath + filename)
+            file.save(filepath + "/" + filename)
             filereg.register(entity_id, filename)
             return "", 201
 
@@ -36,7 +37,4 @@ def upload_file(entity_id):
 def delete_file(entity_id, filename):
     filereg.deregister(entity_id, filename)
     return "", 204
-
-def gen_unique_filename(filename):
-    return filename + "." + str(uuid4())
 
